@@ -1,3 +1,4 @@
-*.py
-.idea/*
-*.iml
+venv/
+.idea/
+main_shortCardiac_Paper.py
+*.pyc
