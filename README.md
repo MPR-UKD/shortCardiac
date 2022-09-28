@@ -1,6 +1,7 @@
 # <p style='color:darkred'> shortCardiac  </p>
 
-#### pip freeze -l > requirements.txt
+#### standardized, simplified and accelerated - cardiac evaluation of tomorrow
+
 ## Overview
 #### I. [What is shortCardiac?](#what)
 #### II. [Step-by-Step Installation](#install)
