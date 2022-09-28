@@ -44,7 +44,7 @@ Please note that `shortCardiac` Source Code requires Python 3.7.
 #### 1. Clone shortCardiac.
 
 ```Shell
-git clone https://github.com/XXX
+git clone https://github.com/MPR-UKD/shortCardiac
 ```
 #### 2. In the following, the cloned directory is called `shortCardiac`.
 ```Shell
@@ -58,9 +58,9 @@ pip install -r requirements.txt
 
 #### 1. Click one of the two links below to download the EXE
 
-[onedir](https://images-wixmp-530a50041672c69d335ba4cf.wixmp.com/templates/image/70a76220135e4ecfbb8baa11220ea5b0.jpg) - one-folder bundle containing an executable
+[onedir](https://uni-duesseldorf.sciebo.de/s/t0cGBmPWojZ5XBQ) - one-folder bundle containing an executable
 
-[onefile](https://images-wixmp-530a50041672c69d335ba4cf.wixmp.com/templates/image/70a76220135e4ecfbb8baa11220ea5b0.jpg) - a bundled executable file (note: starting the exe file takes time, because the file has to be unpacked first)
+[onefile](https://uni-duesseldorf.sciebo.de/s/fXxX5EoOr5efYEW) - a bundled executable file (note: starting the exe file takes time, because the file has to be unpacked first)
 
 <a name="usage"></a>
 ## <p style='color:darkred'> III. Step-by-Step Usage

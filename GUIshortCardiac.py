@@ -1,14 +1,14 @@
+import json
+import os
 import sys
-import PyQt5
+import PyQt5.sip
+from PyQt5 import QtCore
 from PyQt5 import QtGui
 from PyQt5.QtCore import QSize
-from PyQt5 import QtCore
 from PyQt5.QtCore import Qt, QRect, QFile, QTextStream
 from PyQt5.QtWidgets import *
-from shortCardiacBackend import *
-from main import *
-import json
 
+from main import *
 from shortCardiacBackend.Config import RunConfiguration
 
 
@@ -684,11 +684,15 @@ class MainWindow(QMainWindow):
         js = json.dumps(config)
 
         path = QFileDialog.getSaveFileName()[0]
+        if not os.path.exists(path):
+            return None
         with open(path if '.json' in path else path + '.json', 'w+') as f:
             f.write(js)
 
     def load_config(self):
         path = QFileDialog.getOpenFileName()[0]
+        if not os.path.exists(path):
+            return None
         with open(path, 'r+') as f:
             config = json.load(f)
 
@@ -809,6 +813,7 @@ class MainWindow(QMainWindow):
 
 
 if __name__ == '__main__':
+    freeze_support()
     app = QApplication(sys.argv)
     file = QFile(r"dark.qss")
     file.open(QFile.ReadOnly | QFile.Text)

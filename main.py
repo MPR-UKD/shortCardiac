@@ -17,8 +17,6 @@ def run(arg):
 
 
 def main(coord_file, dcm_folder, config):
-    freeze_support()
-
     # Reading in the Dicom images
     dicoms, UIs = load_DICOMs(dcm_folder)
     # Transformation of the coordinates into a file format optimized for shortCardiac Notes: Conversion can take
