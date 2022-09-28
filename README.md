@@ -1,9 +1,6 @@
 # <p style='color:darkred'> shortCardiac  </p>
 
-#### standardized, simplified and accelerated - cardiac evaluation of tomorrow
-
-## <p style='color:red'>Code will be published after the paper has been accepted. The init commit only gives an overview of the project. </p>
-
+#### pip freeze -l > requirements.txt
 ## Overview
 #### I. [What is shortCardiac?](#what)
 #### II. [Step-by-Step Installation](#install)
@@ -42,7 +39,7 @@ Coming soon (hopefully)
 
 ### Source Code
 
-Please note that `shortCardiac` Source Code requires Python 3.7+.
+Please note that `shortCardiac` Source Code requires Python 3.7.
 
 #### 1. Clone shortCardiac.
 
@@ -106,6 +103,11 @@ Alternatively: *The framework can also be started via a separate main script or 
 - Now, shortCardiac search all DICOM images, merge DICOM images and segmentation, start the calculation of Parameters and save overlayed Images with Parameters (if selected) and write all calculations in a CSV-File for further evaluations
 
 #### 7. Publish your next Paper with shortCardiac :)
+
+### Alternative: You can also change the SoruceCode directly or use the Jupyter notebook.
+
+Notes: Python version 3.7 is required to use the Jupyternotebook (specifically the pyradiomics package). The easiest way is to use a virtual interpreter. Here is described how to set one up: [venv-in-JupyterLab](https://medium.com/@laquesisa/virtual-environment-in-jupyter-lab-8b3815ba9662)
+
 
 <a name="Contributing"></a>
 ## <p style='color:darkred'> IV. Contributing

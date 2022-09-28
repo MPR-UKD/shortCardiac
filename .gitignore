@@ -1,4 +1,9 @@
 venv/
 .idea/
+.ipynb_checkpoints/
+__pycache__
+build/
+dist/
 main_shortCardiac_Paper.py
 *.pyc
+main.py
