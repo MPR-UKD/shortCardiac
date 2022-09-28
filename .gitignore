@@ -6,4 +6,5 @@ build/
 dist/
 main_shortCardiac_Paper.py
 *.pyc
-main.py
+*.iml
+*.xml
