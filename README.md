@@ -11,20 +11,20 @@
 <a name="what"></a>
 ## <p style='color:darkred'> I. What is shortCardiac?
 
-`shortCardiac` is an open-source framework implemented in Python that standardizes, simplifies, and accelerates the 
-analysis of short-axis view cardiac magnetic resonance images (MRI). The framework is provided as Python source code, 
-JupyterNotebook, and user-friendly Graphical User Interface (GUI). Based on the segmentation of the heart, 
-length, area, and centroid measurements are performed. In addition, [pyradiomics](https://www.radiomics.io/pyradiomics.html) 
-is implemented to allow the extraction of additional image features based on DICOM gray values. 
-Calculations have been validated by manual reference measurements and all mathematical measurements as well as transformations to 
+`shortCardiac` is an open-source framework implemented in Python that standardizes, simplifies, and accelerates the
+analysis of short-axis view cardiac magnetic resonance images (MRI). The framework is provided as Python source code,
+JupyterNotebook, and user-friendly Graphical User Interface (GUI). Based on the segmentation of the heart,
+length, area, and centroid measurements are performed. In addition, [pyradiomics](https://www.radiomics.io/pyradiomics.html)
+is implemented to allow the extraction of additional image features based on DICOM gray values.
+Calculations have been validated by manual reference measurements and all mathematical measurements as well as transformations to
 SI units were checked by [Unittests](https://docs.python.org/3/library/unittest.html).
 
 <b>Hint:</b> shortCardiac allows the import of [Circle Cvi42](https://www.circlecvi.com/) coordinates / segmentations, which enables an easy implementation in current research projects.
 
 
 *For queries and suggestions:*
-[E-Mail](mailto:ludger.radke@med.uni-duesseldorf.de?subject=[GitHub]%20Source%20Han%20Sans); 
-[Linkedin](https://www.linkedin.com/in/ludger-radke/); 
+[E-Mail](mailto:ludger.radke@med.uni-duesseldorf.de?subject=[GitHub]%20Source%20Han%20Sans);
+[Linkedin](https://www.linkedin.com/in/ludger-radke/);
 [ResearchGate](https://www.researchgate.net/profile/Karl-Radke-2)
 
 #### If you use `shortCardiac` please cite our paper:
@@ -118,3 +118,14 @@ Pull requests, requests to implement more calculations, and to integrate other s
 [GNU General Public License 3](https://www.gnu.org/licenses/gpl-3.0.html)
 
 The GNU General Public License is a free, copyleft license for software and other kinds of works.
+
+### Git hocks
+Install "pre-commit"
+```bash
+pip install pre-commit
+```
+
+then run:
+```bash
+pre-commit install
+```
