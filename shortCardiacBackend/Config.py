@@ -9,7 +9,7 @@ class RunConfiguration(object):
         # which visualize the functioning of the script and the current calculations step by step.
         self.DEBUG = False
 
-        self.coord_mode = 'nii'
+        self.coord_mode = "nii"
 
         ##############################################
         # Activate and deactivate calculation
@@ -46,7 +46,6 @@ class RunConfiguration(object):
         self.second_img_overlay_rois_alpha = 0.2  # hint: float in range 0 - 1
         self.second_img_overlay_EI = False
         self.second_img_overlay_lines = True
-
 
         # ############################################## Resolution Settings
         # ############################################# Factor by which the read coordinates are scaled up for a more
@@ -93,13 +92,19 @@ class RunConfiguration(object):
         self.lv_endo_angle_step_size = 15
 
     def generate_dict(self):
-        return {key: value for key, value in self.__dict__.items() if not key.startswith('__') and not callable(key)}
+        return {
+            key: value
+            for key, value in self.__dict__.items()
+            if not key.startswith("__") and not callable(key)
+        }
 
     def save_to_json(self, save_file):
         information = self.generate_dict()
         js = json.dumps(information)
 
-        with open(save_file if '.json' in save_file else save_file + '.json', 'w+') as f:
+        with open(
+            save_file if ".json" in save_file else save_file + ".json", "w+"
+        ) as f:
             f.write(js)
 
     def load_from_json(self, json_file):

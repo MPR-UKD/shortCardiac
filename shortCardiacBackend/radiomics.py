@@ -9,7 +9,9 @@ from radiomics import setVerbosity
 from shortCardiacBackend.supportFunction import flatted_list
 
 
-def calc_mask_of_polygon(dcm_img: str, coords: dict, name: str, resize_polygon_factor: int) -> np.ndarray:
+def calc_mask_of_polygon(
+    dcm_img: str, coords: dict, name: str, resize_polygon_factor: int
+) -> np.ndarray:
     """
 
     :param dcm_img: path to DICOM image
@@ -20,14 +22,21 @@ def calc_mask_of_polygon(dcm_img: str, coords: dict, name: str, resize_polygon_f
     :return: bool mask with ones and zeros
     """
     dcm_shape = pydicom.dcmread(dcm_img).pixel_array.shape
-    img = Image.new('L', (dcm_shape[1], dcm_shape[0]), 0)
+    img = Image.new("L", (dcm_shape[1], dcm_shape[0]), 0)
     img_draw = ImageDraw.Draw(img)
-    c = tuple([(c1 / resize_polygon_factor, c2 / resize_polygon_factor) for c1, c2 in list(coords.get(name))])
+    c = tuple(
+        [
+            (c1 / resize_polygon_factor, c2 / resize_polygon_factor)
+            for c1, c2 in list(coords.get(name))
+        ]
+    )
     img_draw.polygon(c, outline=1, fill=1)
     return np.array(img)
 
 
-def calc_radiomics(dcm_file: str, mask: np.ndarray, name: str, normalize: bool = False, cf: dict = None):
+def calc_radiomics(
+    dcm_file: str, mask: np.ndarray, name: str, normalize: bool = False, cf: dict = None
+):
     """
     function for calculation of radiomcs features - wrapper fuction for pyradiomics
 
@@ -51,11 +60,16 @@ def calc_radiomics(dcm_file: str, mask: np.ndarray, name: str, normalize: bool =
     def extract_results(res, feauture_class=None):
         feature, feature_names = [], []
         for key, val in six.iteritems(res):
-            if 'Version' in key or 'Settings' in key or 'Configuration' in key:
+            if "Version" in key or "Settings" in key or "Configuration" in key:
                 continue
             feature.append(val)
             _ = "" if feauture_class is None else feauture_class + "_"
-            feature_names.append(_ + name + '_' + key.replace('original_', '').replace('diagnostics_', ''))
+            feature_names.append(
+                _
+                + name
+                + "_"
+                + key.replace("original_", "").replace("diagnostics_", "")
+            )
 
         return feature, feature_names
 

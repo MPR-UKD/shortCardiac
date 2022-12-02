@@ -75,7 +75,7 @@ def length(v):
     scale = np.abs(v).sum()
     if scale == 0:
         return 0
-    return np.sqrt(dotproduct(v/scale, v/scale))*scale
+    return np.sqrt(dotproduct(v / scale, v / scale)) * scale
 
 
 @jit(nopython=True)
@@ -94,11 +94,11 @@ def calc_angle(v1, v2):
     length_v2 = length(v2)
     if length_v1 == 0.0 or length_v2 == 0.0:
         return 1000
-    value = dotproduct(v1/length_v1, v2/length_v2)
+    value = dotproduct(v1 / length_v1, v2 / length_v2)
     return np.round(np.rad2deg(np.arccos(value)) * 1000) / 1000
 
 
-def calc_center_of_2_points(p1, p2, mode='int'):
+def calc_center_of_2_points(p1, p2, mode="int"):
     """
     Returns center point between 2 points
 
@@ -111,8 +111,8 @@ def calc_center_of_2_points(p1, p2, mode='int'):
                     center (np.array): Center point between p1 and p2
     """
     center = p1 + (p2 - p1) / 2
-    if mode == 'int':
-        return center.round().astype('int16')
+    if mode == "int":
+        return center.round().astype("int16")
     return center
 
 
@@ -162,7 +162,7 @@ def get_line(p1, p2, numpy=False):
     return points
 
 
-def rotate_points(points, origin, angle, mode='int'):
+def rotate_points(points, origin, angle, mode="int"):
     """
     2D point transformation from a set of points around a clockwise origin.
 
@@ -186,7 +186,7 @@ def rotate_points(points, origin, angle, mode='int'):
 
 
 @jit(nopython=True)
-def rotate_point(origin, point, angle, mode='int'):
+def rotate_point(origin, point, angle, mode="int"):
     """
     Rotate a point counterclockwise by a given angle around a given origin.
 
@@ -205,7 +205,7 @@ def rotate_point(origin, point, angle, mode='int'):
 
     qx = ox + math.cos(angle) * (px - ox) - math.sin(angle) * (py - oy)
     qy = oy + math.sin(angle) * (px - ox) + math.cos(angle) * (py - oy)
-    if mode == 'int':
+    if mode == "int":
         return round(qx), round(qy)
     return qx, qy
 
@@ -225,7 +225,9 @@ def find_smallest_distance_to_ref(points, ref):
     return points[np.argmin(dist)]
 
 
-def find_distance_with_angles_and_fixed_point(points: list, angles: list, fixed_point: np.array):
+def find_distance_with_angles_and_fixed_point(
+    points: list, angles: list, fixed_point: np.array
+):
     """
     Determines the maximum distances from a reference point to a contour (list of points) at different angles
 
@@ -242,29 +244,33 @@ def find_distance_with_angles_and_fixed_point(points: list, angles: list, fixed_
     for angle in angles:
         points_rot = [rotate_point(fixed_point, point, -angle) for point in points]
         if angle >= 0:
-            points_rot = [point_rot if point_rot[1] > fixed_point[1] else np.array([-100, -100]) for point_rot in
-                          points_rot]
+            points_rot = [
+                point_rot if point_rot[1] > fixed_point[1] else np.array([-100, -100])
+                for point_rot in points_rot
+            ]
         else:
-            points_rot = [point_rot if point_rot[1] < fixed_point[1] else np.array([-100, -100]) for point_rot in
-                          points_rot]
+            points_rot = [
+                point_rot if point_rot[1] < fixed_point[1] else np.array([-100, -100])
+                for point_rot in points_rot
+            ]
         delta_x = [abs(p[0] - fixed_point[0]) for p in points_rot]
         D[str(angle)] = [np.array(points[np.argmin(delta_x)]), np.array(fixed_point)]
     return D
 
 
-def clean_points(points, key, mode='int'):
+def clean_points(points, key, mode="int"):
     """
-     If there are multiple points with the same x-coordinate, all points that do not have the longest distance are removed.
+    If there are multiple points with the same x-coordinate, all points that do not have the longest distance are removed.
 
-            Parameters:
-                    points (list): contour \ polygon as a list with points as np.array
-                    key (str): x-coordinate
-                    mode (str): coordinates of the reference point (x,y)
+           Parameters:
+                   points (list): contour \ polygon as a list with points as np.array
+                   key (str): x-coordinate
+                   mode (str): coordinates of the reference point (x,y)
 
-            Returns:
-                    p1 (np.array): coordinates point 1
-                    p2 (np.array): Coordinates point 2
-                    length (float): Length between the two points
+           Returns:
+                   p1 (np.array): coordinates point 1
+                   p2 (np.array): Coordinates point 2
+                   length (float): Length between the two points
     """
     count = 0
     for p in points:
@@ -280,7 +286,7 @@ def clean_points(points, key, mode='int'):
     p2 = np.array(points[idx_max])
     p1[0] = float(key)
     p2[0] = float(key)
-    if mode == 'int':
-        p1 = p1.round().astype('int16')
-        p2 = p2.round().astype('int16')
+    if mode == "int":
+        p1 = p1.round().astype("int16")
+        p2 = p2.round().astype("int16")
     return p1, p2, length(get_vector(p1, p2))

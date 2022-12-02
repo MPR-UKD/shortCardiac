@@ -6,7 +6,6 @@ from shortCardiacBackend.transformPointsAndVectors import *
 
 
 class Test_transformPointsAndVectors(unittest.TestCase):
-
     def test_line_intersection(self):
         line1 = [np.array([0, 0]), np.array([0, 10])]
         line2 = [np.array([0, 0]), np.array([0, 20])]
@@ -61,7 +60,7 @@ class Test_transformPointsAndVectors(unittest.TestCase):
         self.assertEqual(length(v1), 10)
 
         v1 = np.array([10, 10])
-        self.assertEqual(length(v1), math.sqrt(10 ** 2 + 10 ** 2))
+        self.assertEqual(length(v1), math.sqrt(10**2 + 10**2))
 
     def test_calc_angle(self):
         v1 = np.array([0, 1])
@@ -109,5 +108,5 @@ class Test_transformPointsAndVectors(unittest.TestCase):
         self.assertEqual(get_line(p1, p2)[1], (1, 1))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

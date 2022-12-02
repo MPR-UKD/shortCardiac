@@ -36,7 +36,9 @@ class MySwitch(QPushButton):
         pen.setWidth(2)
         painter.setPen(pen)
 
-        painter.drawRoundedRect(QRect(-width, -radius, 2 * width, 2 * radius), radius, radius)
+        painter.drawRoundedRect(
+            QRect(-width, -radius, 2 * width, 2 * radius), radius, radius
+        )
         painter.setBrush(QtGui.QBrush(bg_color))
         sw_rect = QRect(-radius, -radius, width + radius, 2 * radius)
         if not self.isChecked():
@@ -45,7 +47,9 @@ class MySwitch(QPushButton):
         painter.drawText(sw_rect, Qt.AlignCenter, label)
 
 
-def set_angle_dependent_measurements(main_window, configs_layout, column_, row_, column_size, row_size):
+def set_angle_dependent_measurements(
+    main_window, configs_layout, column_, row_, column_size, row_size
+):
     config = QTabWidget()
     config_layout = QGridLayout()
     #
@@ -306,7 +310,9 @@ def set_visualisation(mainWindow, configs_layout, column_, row_, column_size, ro
     configs_layout.addWidget(config, column_, row_, column_size, row_size)
 
 
-def set_calculation_features(mainWindow, configs_layout, column_, row_, column_size, row_size):
+def set_calculation_features(
+    mainWindow, configs_layout, column_, row_, column_size, row_size
+):
     config = QTabWidget()
     config_layout = QGridLayout()
     caption_text = QLabel("Radiomics texture analyses")
@@ -402,10 +408,14 @@ def add_information(layout):
     myFont.setBold(True)
     version.setFont(myFont)
     data = QLabel(" Sep 26, 2022")
-    copyright_ = QLabel("Copyright (C) 2022 - present; University Hospital Düsseldorf, Germany - "
-                        "License: GNU GENERAL PUBLICE LICENSE, Version 3, 29 June 2007")
-    citation = QLabel("Citation: “shortCardiac” - an open-source framework for fast and standardized assessment of "
-                      "cardiac function; KL. Radke et al.")
+    copyright_ = QLabel(
+        "Copyright (C) 2022 - present; University Hospital Düsseldorf, Germany - "
+        "License: GNU GENERAL PUBLICE LICENSE, Version 3, 29 June 2007"
+    )
+    citation = QLabel(
+        "Citation: “shortCardiac” - an open-source framework for fast and standardized assessment of "
+        "cardiac function; KL. Radke et al."
+    )
 
     info_layout.addWidget(version, 0, 0)
     info_layout.addWidget(data, 0, 1)
@@ -472,7 +482,9 @@ def file_manager(mainWindow, file_manager_layout):
     run.clicked.connect(mainWindow.run_shortCardiac)
     file_manager_layout.addWidget(run, 0, 2, 3, 1)
 
-    coordinate_load_button.clicked.connect(mainWindow.coordinate_prepare_coords_function)
+    coordinate_load_button.clicked.connect(
+        mainWindow.coordinate_prepare_coords_function
+    )
     dicom_load_button.clicked.connect(mainWindow.dicom_load_function)
 
 
@@ -480,9 +492,10 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.information = {}
-        self.mode = 'cvi42'
+        self.mode = "cvi42"
         self.setWindowTitle(
-            "shortCardiac - an open-source framework for fast and standardized assessing cardiac functionality")
+            "shortCardiac - an open-source framework for fast and standardized assessing cardiac functionality"
+        )
         myFont = QtGui.QFont()
         myFont.setPointSize(8)
         self.setFont(myFont)
@@ -512,16 +525,16 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(widget)
         self.set_ranges()
         self.set_default()
-        self.setFont(QtGui.QFont('Times'))
+        self.setFont(QtGui.QFont("Times"))
         # self.coordinate_prepare_coords_function()
 
     def update_mode(self):
         if self.coordinate_function_box.currentIndex() == 1:
-            self.mode = 'nii'
+            self.mode = "nii"
         elif self.coordinate_function_box.currentIndex() == 0:
-            self.mode = 'cvi42'
+            self.mode = "cvi42"
         else:
-            self.mode = 'cvi42'
+            self.mode = "cvi42"
             self.coordinate_function_box.setCurrentIndex(0)
         self.set_names()
 
@@ -535,24 +548,30 @@ class MainWindow(QMainWindow):
         dialog = QFileDialog.getOpenFileName(self, "Select coordinate file", path, "*")
         self.coordinate_line_edit.setText(dialog[0])
         msg = None
-        if '.nii' in dialog[0]:
+        if ".nii" in dialog[0]:
             if self.coordinate_function_box.currentIndex() != 1:
                 msg = QMessageBox()
                 msg.setWindowTitle("User massage")
-                msg.setText("Nifti file selected, but the current mode is cvi42! \n \n Mode changed to nii")
+                msg.setText(
+                    "Nifti file selected, but the current mode is cvi42! \n \n Mode changed to nii"
+                )
             self.coordinate_function_box.setCurrentIndex(1)
-        elif 'cvi42wsx' in dialog[0]:
+        elif "cvi42wsx" in dialog[0]:
             if self.coordinate_function_box.currentIndex() != 0:
                 msg = QMessageBox()
                 msg.setWindowTitle("User massage")
-                msg.setText("Cvi42 file selected, but the current mode is nii! \n \n Mode changed to cvi42")
+                msg.setText(
+                    "Cvi42 file selected, but the current mode is nii! \n \n Mode changed to cvi42"
+                )
             self.coordinate_function_box.setCurrentIndex(0)
-        elif '.pkl' in dialog[0]:
+        elif ".pkl" in dialog[0]:
             pass
         else:
             msg = QMessageBox()
             msg.setWindowTitle("User massage")
-            msg.setText("Unknown file type selected, please select '.nii', '.nii.gz' or '.cvi42wsx'")
+            msg.setText(
+                "Unknown file type selected, please select '.nii', '.nii.gz' or '.cvi42wsx'"
+            )
             self.coordinate_line_edit.setText("")
 
         if msg is not None:
@@ -562,7 +581,7 @@ class MainWindow(QMainWindow):
         config = self.create_config()
         dicom_folder = self.dicom_line_edit.text()
         coord_file = self.coordinate_line_edit.text()
-        if '' == dicom_folder or '' == coord_file:
+        if "" == dicom_folder or "" == coord_file:
             return None
         main(coord_file=coord_file, dcm_folder=dicom_folder, config=config)
 
@@ -586,11 +605,11 @@ class MainWindow(QMainWindow):
         self.rescaling_factor.setMaximum(24)
 
     def set_names(self):
-        if self.mode == 'cvi42':
+        if self.mode == "cvi42":
             self.rv_name_or_nr.setText("sarvendocardialContour")
             self.lv_epi_name_or_nr.setText("saepicardialContour")
             self.lv_endo_name_or_nr.setText("saendocardialContour")
-        elif self.mode == 'nii':
+        elif self.mode == "nii":
             self.rv_name_or_nr.setText("1")
             self.lv_epi_name_or_nr.setText("2")
             self.lv_endo_name_or_nr.setText("3")
@@ -640,101 +659,102 @@ class MainWindow(QMainWindow):
 
     def save_config(self):
         config = {
-            'rv_name_or_nr': self.rv_name_or_nr.text(),
-            'lv_epi_name_or_nr': self.lv_epi_name_or_nr.text(),
-            'lv_endo_name_or_nr': self.lv_endo_name_or_nr.text(),
-
-            'ventral_max': self.ventral_max.value(),
-            'ventral_step_size': self.ventral_step_size.value(),
-            'dorsal_max': self.dorsal_max.value(),
-            'dorsal_step_size': self.dorsal_step_size.value(),
-            'epicard_max': self.epicard_max.value(),
-            'epicard_step_size': self.epicard_step_size.value(),
-            'endocard_max': self.endocard_max.value(),
-            'endocard_step_size': self.endocard_step_size.value(),
-            'rescaling_factor': self.rescaling_factor.value(),
-
-            'second_img': self.second_img.isChecked(),
-            'save_png': self.save_png.isChecked(),
-            'crop_image': self.crop_image.isChecked(),
-            'crop_size': self.crop_size.value(),
-
-            'worker_num': self.worker_num.value(),
-
-            'shape_feature': self.shape_feature.isChecked(),
-            'firstorder_feature': self.firstorder_feature.isChecked(),
-            'glcm_feature': self.glcm_feature.isChecked(),
-            'glrlm_feature': self.glrlm_feature.isChecked(),
-            'glszm_feature': self.glszm_feature.isChecked(),
-            'angle_correction': self.angle_correction.isChecked(),
-            'smooth_resizing': self.smooth_resizing.isChecked(),
-
-            'first_img_dicom_transparence': self.first_img_dicom_transparence.value(),
-
-            'first_img_overlay_dicom': self.first_img_overlay_dicom.isChecked(),
-            'first_img_overlay_rois': self.first_img_overlay_rois.isChecked(),
-            'first_img_overlay_rois_alpha': self.first_img_overlay_rois_alpha.value(),
-            'first_img_overlay_lines': self.first_img_overlay_lines.isChecked(),
-            'second_img_overlay_dicom': self.second_img_overlay_dicom.isChecked(),
-            'second_img_overlay_rois': self.second_img_overlay_rois.isChecked(),
-            'second_img_overlay_rois_alpha': self.second_img_overlay_rois_alpha.value(),
-            'second_img_overlay_EI': self.second_img_overlay_EI.isChecked(),
-            'second_img_overlay_lines': self.second_img_overlay_lines.isChecked()}
+            "rv_name_or_nr": self.rv_name_or_nr.text(),
+            "lv_epi_name_or_nr": self.lv_epi_name_or_nr.text(),
+            "lv_endo_name_or_nr": self.lv_endo_name_or_nr.text(),
+            "ventral_max": self.ventral_max.value(),
+            "ventral_step_size": self.ventral_step_size.value(),
+            "dorsal_max": self.dorsal_max.value(),
+            "dorsal_step_size": self.dorsal_step_size.value(),
+            "epicard_max": self.epicard_max.value(),
+            "epicard_step_size": self.epicard_step_size.value(),
+            "endocard_max": self.endocard_max.value(),
+            "endocard_step_size": self.endocard_step_size.value(),
+            "rescaling_factor": self.rescaling_factor.value(),
+            "second_img": self.second_img.isChecked(),
+            "save_png": self.save_png.isChecked(),
+            "crop_image": self.crop_image.isChecked(),
+            "crop_size": self.crop_size.value(),
+            "worker_num": self.worker_num.value(),
+            "shape_feature": self.shape_feature.isChecked(),
+            "firstorder_feature": self.firstorder_feature.isChecked(),
+            "glcm_feature": self.glcm_feature.isChecked(),
+            "glrlm_feature": self.glrlm_feature.isChecked(),
+            "glszm_feature": self.glszm_feature.isChecked(),
+            "angle_correction": self.angle_correction.isChecked(),
+            "smooth_resizing": self.smooth_resizing.isChecked(),
+            "first_img_dicom_transparence": self.first_img_dicom_transparence.value(),
+            "first_img_overlay_dicom": self.first_img_overlay_dicom.isChecked(),
+            "first_img_overlay_rois": self.first_img_overlay_rois.isChecked(),
+            "first_img_overlay_rois_alpha": self.first_img_overlay_rois_alpha.value(),
+            "first_img_overlay_lines": self.first_img_overlay_lines.isChecked(),
+            "second_img_overlay_dicom": self.second_img_overlay_dicom.isChecked(),
+            "second_img_overlay_rois": self.second_img_overlay_rois.isChecked(),
+            "second_img_overlay_rois_alpha": self.second_img_overlay_rois_alpha.value(),
+            "second_img_overlay_EI": self.second_img_overlay_EI.isChecked(),
+            "second_img_overlay_lines": self.second_img_overlay_lines.isChecked(),
+        }
 
         js = json.dumps(config)
 
         path = QFileDialog.getSaveFileName()[0]
         if not os.path.exists(path):
             return None
-        with open(path if '.json' in path else path + '.json', 'w+') as f:
+        with open(path if ".json" in path else path + ".json", "w+") as f:
             f.write(js)
 
     def load_config(self):
         path = QFileDialog.getOpenFileName()[0]
         if not os.path.exists(path):
             return None
-        with open(path, 'r+') as f:
+        with open(path, "r+") as f:
             config = json.load(f)
 
-        self.rv_name_or_nr.setText(config['rv_name_or_nr'])
-        self.lv_epi_name_or_nr.setText(config['lv_epi_name_or_nr'])
-        self.lv_endo_name_or_nr.setText(config['lv_endo_name_or_nr'])
+        self.rv_name_or_nr.setText(config["rv_name_or_nr"])
+        self.lv_epi_name_or_nr.setText(config["lv_epi_name_or_nr"])
+        self.lv_endo_name_or_nr.setText(config["lv_endo_name_or_nr"])
 
-        self.ventral_max.setValue(config['ventral_max'])
-        self.ventral_step_size.setValue(config['ventral_step_size'])
-        self.dorsal_max.setValue(config['dorsal_max'])
-        self.dorsal_step_size.setValue(config['dorsal_step_size'])
-        self.epicard_max.setValue(config['epicard_max'])
-        self.epicard_step_size.setValue(config['epicard_step_size'])
-        self.endocard_max.setValue(config['endocard_max'])
-        self.endocard_step_size.setValue(config['endocard_step_size'])
-        self.rescaling_factor.setValue(config['rescaling_factor'])
+        self.ventral_max.setValue(config["ventral_max"])
+        self.ventral_step_size.setValue(config["ventral_step_size"])
+        self.dorsal_max.setValue(config["dorsal_max"])
+        self.dorsal_step_size.setValue(config["dorsal_step_size"])
+        self.epicard_max.setValue(config["epicard_max"])
+        self.epicard_step_size.setValue(config["epicard_step_size"])
+        self.endocard_max.setValue(config["endocard_max"])
+        self.endocard_step_size.setValue(config["endocard_step_size"])
+        self.rescaling_factor.setValue(config["rescaling_factor"])
 
-        self.second_img.setChecked(config['second_img'])
-        self.save_png.setChecked(config['save_png'])
-        self.crop_image.setChecked(config['crop_image'])
-        self.crop_size.setValue(config['crop_size'])
+        self.second_img.setChecked(config["second_img"])
+        self.save_png.setChecked(config["save_png"])
+        self.crop_image.setChecked(config["crop_image"])
+        self.crop_size.setValue(config["crop_size"])
 
-        self.worker_num.setValue(config['ventral_max'])
+        self.worker_num.setValue(config["ventral_max"])
 
-        self.shape_feature.setChecked(config['shape_feature'])
-        self.firstorder_feature.setChecked(config['firstorder_feature'])
-        self.glcm_feature.setChecked(config['glcm_feature'])
-        self.glrlm_feature.setChecked(config['glrlm_feature'])
-        self.glszm_feature.setChecked(config['glszm_feature'])
-        self.angle_correction.setChecked(config['angle_correction'])
-        self.smooth_resizing.setChecked(config['smooth_resizing'])
-        self.first_img_dicom_transparence.setValue(config['first_img_dicom_transparence'])
-        self.first_img_overlay_dicom.setChecked(config['first_img_overlay_dicom'])
-        self.first_img_overlay_rois.setChecked(config['first_img_overlay_rois'])
-        self.first_img_overlay_rois_alpha.setValue(config['first_img_overlay_rois_alpha'])
-        self.first_img_overlay_lines.setChecked(config['first_img_overlay_lines'])
-        self.second_img.setChecked(config['second_img'])
-        self.second_img_overlay_dicom.setChecked(config['second_img_overlay_dicom'])
-        self.second_img_overlay_rois.setChecked(config['second_img_overlay_rois'])
-        self.second_img_overlay_rois_alpha.setValue(config['second_img_overlay_rois_alpha'])
-        self.second_img_overlay_EI.setChecked(config['second_img_overlay_EI'])
-        self.second_img_overlay_lines.setChecked(config['second_img_overlay_lines'])
+        self.shape_feature.setChecked(config["shape_feature"])
+        self.firstorder_feature.setChecked(config["firstorder_feature"])
+        self.glcm_feature.setChecked(config["glcm_feature"])
+        self.glrlm_feature.setChecked(config["glrlm_feature"])
+        self.glszm_feature.setChecked(config["glszm_feature"])
+        self.angle_correction.setChecked(config["angle_correction"])
+        self.smooth_resizing.setChecked(config["smooth_resizing"])
+        self.first_img_dicom_transparence.setValue(
+            config["first_img_dicom_transparence"]
+        )
+        self.first_img_overlay_dicom.setChecked(config["first_img_overlay_dicom"])
+        self.first_img_overlay_rois.setChecked(config["first_img_overlay_rois"])
+        self.first_img_overlay_rois_alpha.setValue(
+            config["first_img_overlay_rois_alpha"]
+        )
+        self.first_img_overlay_lines.setChecked(config["first_img_overlay_lines"])
+        self.second_img.setChecked(config["second_img"])
+        self.second_img_overlay_dicom.setChecked(config["second_img_overlay_dicom"])
+        self.second_img_overlay_rois.setChecked(config["second_img_overlay_rois"])
+        self.second_img_overlay_rois_alpha.setValue(
+            config["second_img_overlay_rois_alpha"]
+        )
+        self.second_img_overlay_EI.setChecked(config["second_img_overlay_EI"])
+        self.second_img_overlay_lines.setChecked(config["second_img_overlay_lines"])
 
     def create_config(self):
         cf = RunConfiguration()
@@ -747,20 +767,26 @@ class MainWindow(QMainWindow):
         ##############################################
         cf.img_transparent = True
         cf.save_pngs = self.save_png.isChecked()
-        cf.crop_img = self.crop_image.isChecked()  # Boolean specifying whether the image should be cropped to the heart center
+        cf.crop_img = (
+            self.crop_image.isChecked()
+        )  # Boolean specifying whether the image should be cropped to the heart center
         cf.crop_x = self.crop_size.value() / 100  # percent as float in range 0 - 1
         cf.crop_y = self.crop_size.value() / 100  # percent as float in range 0 - 1
         # first image
         cf.first_img_overlay_dicom = self.first_img_overlay_dicom.isChecked()
         cf.first_img_overlay_rois = self.first_img_overlay_rois.isChecked()
-        cf.first_img_overlay_rois_alpha = self.first_img_overlay_rois_alpha.value()  # hint: float in range 0 - 1
+        cf.first_img_overlay_rois_alpha = (
+            self.first_img_overlay_rois_alpha.value()
+        )  # hint: float in range 0 - 1
         cf.first_img_overlay_EI = self.first_img_overlay_EI.isChecked()
         cf.first_img_overlay_lines = self.first_img_overlay_lines.isChecked()
         # second image
         cf.second_img = self.second_img.isChecked()
         cf.second_img_overlay_dicom = self.second_img_overlay_dicom.isChecked()
         cf.second_img_overlay_rois = self.second_img_overlay_rois.isChecked()
-        cf.second_img_overlay_rois_alpha = self.second_img_overlay_rois_alpha.value() / 100  # hint: float in range 0 - 1
+        cf.second_img_overlay_rois_alpha = (
+            self.second_img_overlay_rois_alpha.value() / 100
+        )  # hint: float in range 0 - 1
         cf.second_img_overlay_EI = self.second_img_overlay_EI.isChecked()
         cf.second_img_overlay_lines = self.second_img_overlay_lines.isChecked()
 
@@ -812,13 +838,13 @@ class MainWindow(QMainWindow):
         return cf
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     freeze_support()
     app = QApplication(sys.argv)
     file = QFile(r"dark.qss")
     file.open(QFile.ReadOnly | QFile.Text)
     steam = QTextStream(file)
-    app.setStyle('QtCurve')
+    app.setStyle("QtCurve")
     app.setStyleSheet(steam.readAll())
 
     window = MainWindow()

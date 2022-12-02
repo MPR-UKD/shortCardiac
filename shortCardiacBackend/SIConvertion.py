@@ -2,8 +2,14 @@ import numpy as np
 from shortCardiacBackend.transformPointsAndVectors import length, get_vector
 
 
-def convert_params(line_params: list, point_params: list, area_params: list,
-                   scope_params: list, resize_factor: int, pixel_spacing: dict):
+def convert_params(
+    line_params: list,
+    point_params: list,
+    area_params: list,
+    scope_params: list,
+    resize_factor: int,
+    pixel_spacing: dict,
+):
     """
     wrapper function to convert als params from pixel spacing to "SI" units
 
@@ -39,10 +45,25 @@ def line_to_si(params: list, resize_factor: int, pixel_spacing: dict):
     :return: line_params as list of floats (length in mm)
     """
     if params is not None:
-        return [length(get_vector(
-            np.array([p[0] / resize_factor * pixel_spacing["x"], p[1] / resize_factor * pixel_spacing["y"]]),
-            np.array([q[0] / resize_factor * pixel_spacing["x"], q[1] / resize_factor * pixel_spacing["y"]])
-        )) for p, q in params]
+        return [
+            length(
+                get_vector(
+                    np.array(
+                        [
+                            p[0] / resize_factor * pixel_spacing["x"],
+                            p[1] / resize_factor * pixel_spacing["y"],
+                        ]
+                    ),
+                    np.array(
+                        [
+                            q[0] / resize_factor * pixel_spacing["x"],
+                            q[1] / resize_factor * pixel_spacing["y"],
+                        ]
+                    ),
+                )
+            )
+            for p, q in params
+        ]
 
 
 def area_to_si(area_params: list, resize_factor: int, pixel_spacing: dict):
@@ -56,7 +77,10 @@ def area_to_si(area_params: list, resize_factor: int, pixel_spacing: dict):
     :return: list with area_params as list of floats with SI units - mm^2
     """
     if area_params is not None:
-        return [area / (resize_factor ** 2) * pixel_spacing["x"] * pixel_spacing["y"] for area in area_params]
+        return [
+            area / (resize_factor**2) * pixel_spacing["x"] * pixel_spacing["y"]
+            for area in area_params
+        ]
 
 
 def scope_to_si(scope_params, resize_factor, pixel_spacing):
@@ -69,5 +93,7 @@ def scope_to_si(scope_params, resize_factor, pixel_spacing):
     :return:
     """
     if scope_params is not None:
-        return [scope / resize_factor * (pixel_spacing["x"] + pixel_spacing["y"]) / 2 for
-                scope in scope_params]
+        return [
+            scope / resize_factor * (pixel_spacing["x"] + pixel_spacing["y"]) / 2
+            for scope in scope_params
+        ]

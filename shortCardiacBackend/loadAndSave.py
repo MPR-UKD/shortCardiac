@@ -29,7 +29,7 @@ def load_DICOMs(folder: str, fast_mode: bool = False) -> [list, list]:
     dcms, uis = [], []
     for (dirpath, dirnames, filenames) in os.walk(folder):
         for filename in filenames:
-            if fast_mode and os.path.splitext(filename)[-1] == 'dcm':
+            if fast_mode and os.path.splitext(filename)[-1] == "dcm":
                 continue
             dcm_file = os.path.join(dirpath, filename)
             # Checks if the file is a DICOM file; if so, the file and ui will saved
@@ -39,7 +39,7 @@ def load_DICOMs(folder: str, fast_mode: bool = False) -> [list, list]:
     return dcms, uis
 
 
-def load_dcm_as_PIL(dcm_file: str, resize_factor: int =1):
+def load_dcm_as_PIL(dcm_file: str, resize_factor: int = 1):
     """
     Returns resized dicom image as Pillow RGB Image
 
@@ -51,15 +51,17 @@ def load_dcm_as_PIL(dcm_file: str, resize_factor: int =1):
                     dcm_img (Pillow Image): dcm_image as RGB image
     """
 
-    dicom = pydicom.dcmread(dcm_file).pixel_array.astype('float32')
+    dicom = pydicom.dcmread(dcm_file).pixel_array.astype("float32")
 
     # rescale DICOM image to RGB scaling
     dicom_rgb = dicom / dicom.max() * 255
 
     # resizing and converting to RGB
-    return Image.fromarray(dicom_rgb).resize(
-        (dicom.shape[1] * resize_factor,
-         dicom.shape[0] * resize_factor)).convert('RGB')
+    return (
+        Image.fromarray(dicom_rgb)
+        .resize((dicom.shape[1] * resize_factor, dicom.shape[0] * resize_factor))
+        .convert("RGB")
+    )
 
 
 def save(results, dicom_folder):
@@ -72,8 +74,12 @@ def customized_saving_technical_note(results, dicom_folder):
     """
     # D0 = septum length
     def calc_D0(params, params_name):
-        index_0 = params_name.index("septum_center_to_right_ventricle_endo_ventral 0° [mm]")
-        index_180 = params_name.index("septum_center_to_right_ventricle_endo_ventral 180° [mm]")
+        index_0 = params_name.index(
+            "septum_center_to_right_ventricle_endo_ventral 0° [mm]"
+        )
+        index_180 = params_name.index(
+            "septum_center_to_right_ventricle_endo_ventral 180° [mm]"
+        )
         D0 = params[index_0] + params[index_180]
         D0_name = "D0"
         return D0, D0_name
@@ -86,7 +92,7 @@ def customized_saving_technical_note(results, dicom_folder):
 
         :return: string with params
         """
-        params = [str(p).replace(',', '\\').replace('.', ',') + ';' for p in params]
+        params = [str(p).replace(",", "\\").replace(".", ",") + ";" for p in params]
         return "".join(s for s in params)
 
     first_img = True
@@ -96,18 +102,29 @@ def customized_saving_technical_note(results, dicom_folder):
             continue
         D0, D0_name = calc_D0(params, params_name)
         if first_img:
-            string_results = 'Mode;file;' + ''.join([name + ';' for name in params_name + [D0_name]]) + '\n'
+            string_results = (
+                "Mode;file;"
+                + "".join([name + ";" for name in params_name + [D0_name]])
+                + "\n"
+            )
             first_img = False
         df = pydicom.dcmread(file)
-        Mode = file.replace(dicom_folder, '').split('\\')[1]
-        string_results += Mode + ';' + file.replace(dicom_folder, '') + ';' + params_to_string(params + [D0]) + '\n'
+        Mode = file.replace(dicom_folder, "").split("\\")[1]
+        string_results += (
+            Mode
+            + ";"
+            + file.replace(dicom_folder, "")
+            + ";"
+            + params_to_string(params + [D0])
+            + "\n"
+        )
     if first_img:
         print("Error")
         return None
-    with open(dicom_folder + r'\results_de.csv', 'w+') as csv_file:
+    with open(dicom_folder + r"\results_de.csv", "w+") as csv_file:
         csv_file.writelines(string_results)
-    with open(dicom_folder + r'\results_eng.csv', 'w+') as csv_file:
-        csv_file.writelines(string_results.replace(',', '.'))
+    with open(dicom_folder + r"\results_eng.csv", "w+") as csv_file:
+        csv_file.writelines(string_results.replace(",", "."))
 
 
 def generate_mp4(folder: str, fps: int = 3) -> None:
@@ -119,7 +136,7 @@ def generate_mp4(folder: str, fps: int = 3) -> None:
     """
     images = natsorted(glob.glob(folder + os.sep + "*.png"))
     clip = moviepy.video.io.ImageSequenceClip.ImageSequenceClip(images, fps=fps)
-    clip.write_videofile(folder + os.sep + 'result_video.mp4')
+    clip.write_videofile(folder + os.sep + "result_video.mp4")
 
 
 def load_result_csv(file: str) -> pd.DataFrame:
@@ -136,7 +153,7 @@ def load_result_csv(file: str) -> pd.DataFrame:
 
         def transform_value(value):
             try:
-                value = float(value.replace(',', '.'))
+                value = float(value.replace(",", "."))
             except ValueError:
                 pass
             return value
@@ -146,7 +163,7 @@ def load_result_csv(file: str) -> pd.DataFrame:
                 header = row
                 continue
 
-            lines.append([transform_value(_.replace(',', '.')) for _ in row])
+            lines.append([transform_value(_.replace(",", ".")) for _ in row])
     if header is None:
         return None
     return pd.DataFrame(np.array(lines, dtype=object), columns=header)

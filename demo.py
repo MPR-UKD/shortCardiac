@@ -9,11 +9,11 @@ def calculation(arguments):
     return sCardiac.run()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Specification of the locally stored file paths
-    cvi42_file = r'local_path_to_cvi42_file_with_segmentations.cvi42wsx'
-    dcm_folder = r'local_path_to_dicom_data'
-    coord_file = r'local_path_name_of_dict_with_contours_after_preprocessing'
+    cvi42_file = r"local_path_to_cvi42_file_with_segmentations.cvi42wsx"
+    dcm_folder = r"local_path_to_dicom_data"
+    coord_file = r"local_path_name_of_dict_with_contours_after_preprocessing"
 
     # Create the RunConfiguration - here you define what should be calculated
     config = RunConfiguration()
@@ -29,8 +29,9 @@ if __name__ == '__main__':
     # Parallel evaluation of the images
     with Pool(8) as pool:
         args = parse_to_arguments(config, coords, dicom_files, UIs)
-        results = [_ for _ in tqdm(pool.imap_unordered(calculation, args), total=len(args))]
+        results = [
+            _ for _ in tqdm(pool.imap_unordered(calculation, args), total=len(args))
+        ]
 
     # Saves the results as csv-file
     save(results, dcm_folder)
-
