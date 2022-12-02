@@ -24,11 +24,11 @@ def main(coord_file, dcm_folder, config):
     # already been converted, this step can be skipped.
     coordReader = CoordReader(config)
     if not coord_file.endswith('.pkl'):
-        if config.coord_mode == 'cvi42':
+        if config.mode == 'cvi42':
             cvi42_file = coord_file
             coord_file = coord_file[:-4] + '.pkl'
-            coordReader.preparation_cvi42(file=cvi42_file, UIs=UIs, save_file_name=coord_file)
-        elif config.coord_mode == 'nii':
+            coordReader.preparation_cvi42(cvi42_file=cvi42_file, save_file_name=coord_file)
+        elif config.mode == 'nii':
             nii_file = coord_file
             coord_file = coord_file[:-4] + '.pkl' if 'nii.gz' not in coord_file else coord_file[:-7] + '.pkl'
             coordReader.preparation_nii(nii_file=nii_file, dcm_sorted=dicoms, save_file_name=coord_file)
