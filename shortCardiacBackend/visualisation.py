@@ -1,9 +1,7 @@
 import numpy as np
-from PIL import Image, ImageDraw
-
-from shortCardiacBackend.transformContours import calc_center_of_polygon
 from PIL import Image, ImageDraw, ImageFont
-from shortCardiacBackend.transformContours import rotate_points
+
+from shortCardiacBackend.transformContours import calc_center_of_polygon, rotate_points
 
 
 def show_segmentation(config, dicom_img, coords):
@@ -287,11 +285,11 @@ def plot_img(
         6 * scaling,
     ]
     for i, lines in enumerate(line_params):
+        if lines == [[]] or lines is None:
+            continue
         lines = [(p1 * scaling, p2 * scaling) for p1, p2 in lines]
         if not img_cf["angle_correction"]:
             lines = [tuple(rotate_points(line, center_img, -angle)) for line in lines]
-        if lines is None:
-            continue
         if i < 4 and not img_cf["overlay_lines"]:
             continue
         if i >= 4 and not img_cf["overlay_EI"]:

@@ -1,11 +1,11 @@
 import json
 import os
 import sys
+
+import pydicom.encoders
 import PyQt5.sip
-from PyQt5 import QtCore
-from PyQt5 import QtGui
-from PyQt5.QtCore import QSize
-from PyQt5.QtCore import Qt, QRect, QFile, QTextStream
+from PyQt5 import QtCore, QtGui
+from PyQt5.QtCore import QFile, QRect, QSize, Qt, QTextStream
 from PyQt5.QtWidgets import *
 
 from main import *

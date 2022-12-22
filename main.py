@@ -49,7 +49,7 @@ def main(coord_file, dcm_folder, config):
     args = parse_to_arguments(config, coords, dicoms, UIs)
 
     if config.worker == 0:
-        results = [run(arg) for arg in args]
+        results = [run(arg) for arg in tqdm(args)]
     else:
         with Pool(config.worker) as pool:
             results = [_ for _ in tqdm(pool.imap_unordered(run, args), total=len(args))]

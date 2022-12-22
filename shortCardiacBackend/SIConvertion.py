@@ -1,5 +1,6 @@
 import numpy as np
-from shortCardiacBackend.transformPointsAndVectors import length, get_vector
+
+from shortCardiacBackend.transformPointsAndVectors import get_vector, length
 
 
 def convert_params(
@@ -45,25 +46,31 @@ def line_to_si(params: list, resize_factor: int, pixel_spacing: dict):
     :return: line_params as list of floats (length in mm)
     """
     if params is not None:
-        return [
-            length(
-                get_vector(
-                    np.array(
-                        [
-                            p[0] / resize_factor * pixel_spacing["x"],
-                            p[1] / resize_factor * pixel_spacing["y"],
-                        ]
-                    ),
-                    np.array(
-                        [
-                            q[0] / resize_factor * pixel_spacing["x"],
-                            q[1] / resize_factor * pixel_spacing["y"],
-                        ]
-                    ),
+        SI = []
+        for param in params:
+            if not param:
+                SI.append("None")
+                continue
+            p, q = param
+            SI.append(
+                length(
+                    get_vector(
+                        np.array(
+                            [
+                                p[0] / resize_factor * pixel_spacing["x"],
+                                p[1] / resize_factor * pixel_spacing["y"],
+                            ]
+                        ),
+                        np.array(
+                            [
+                                q[0] / resize_factor * pixel_spacing["x"],
+                                q[1] / resize_factor * pixel_spacing["y"],
+                            ]
+                        ),
+                    )
                 )
             )
-            for p, q in params
-        ]
+        return SI
 
 
 def area_to_si(area_params: list, resize_factor: int, pixel_spacing: dict):

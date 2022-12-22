@@ -2,14 +2,14 @@ from abc import ABC
 
 import matplotlib.pyplot as plt
 
-from shortCardiacBackend.SIConvertion import convert_params
 from shortCardiacBackend.loadAndSave import load_dcm_as_PIL
+from shortCardiacBackend.radiomics import calc_mask_of_polygon, calc_radiomics
+from shortCardiacBackend.ShowCalculationsStepByStep import *
+from shortCardiacBackend.SIConvertion import convert_params
 from shortCardiacBackend.supportFunction import *
 from shortCardiacBackend.transformContours import *
 from shortCardiacBackend.transformPointsAndVectors import *
 from shortCardiacBackend.visualisation import *
-from shortCardiacBackend.radiomics import calc_radiomics, calc_mask_of_polygon
-from shortCardiacBackend.ShowCalculationsStepByStep import *
 
 
 def display(image):
@@ -23,6 +23,12 @@ def check_coords(coords, config):
     if config.lv_endo_name_or_nr not in coords.keys():
         return False
     if config.lv_epi_name_or_nr not in coords.keys():
+        return False
+    try:
+        calc_center_of_polygon(coords[config.rv_name_or_nr])
+        calc_center_of_polygon(coords[config.lv_endo_name_or_nr])
+        calc_center_of_polygon(coords[config.lv_epi_name_or_nr])
+    except ZeroDivisionError:
         return False
     return True
 
@@ -220,13 +226,15 @@ class ShortCardiac(ABC):
             self.merge_results()
             return self.dcm_file, [], self.merged_param_names
         try:
+            # if True:
             self.feature_extraction()
             self.quantitative_septum_evaluation()
             self.quantitative_right_ventricle_evaluation()
             self.quantitative_saendocardial_contour_evaluation()
             self.quantitative_saepicardial_contour_evaluation()
             self.merge_results()
-        except:
+        # else:
+        except Exception as e:
             self.merge_results()
             return self.dcm_file, [], self.merged_param_names
         return self.get_results()
@@ -377,9 +385,13 @@ class ShortCardiac(ABC):
         )
 
         # Calculation of the longest stretch antiparallel to the cardiac axis to describe the curvature of the right ventricle.
-        self.Septum_axis_to_rv_endo = calc_line_for_EI(
-            self.coords["sarvendocardialContourDorsalClosed"], 90
-        )
+        try:
+            self.Septum_axis_to_rv_endo = calc_line_for_EI(
+                self.coords["sarvendocardialContourDorsalClosed"], 90
+            )
+        except ZeroDivisionError:
+            self.calculable = False
+            raise ZeroDivisionError
 
         # Calculation of the intersection of L1 & L2
         self.Line_Intersection_EI_rv_endo = line_intersection(
