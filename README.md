@@ -119,6 +119,34 @@ Notes: Python version 3.7 is required to use the Jupyternotebook (specifically t
 ## <p style='color:darkred'> IV. Contributing
 Pull requests, requests to implement more calculations, and to integrate other segmentation frameworks are welcome. Please open an issue to discuss what you want to change for significant changes.
 
+### Expanding new parameter as example for the calc_radiomics function
+
+To include more Radiomics features in the 'calc_radiomics' function, you can follow these steps:
+ 1. Update the `cf` dictionary: Add new keys for additional features you want to include, setting their values to True. For example:
+ 
+ ```python
+cf = {
+    ...
+    "new_feature": True,
+}
+```
+2. Implement the extraction for the new feature: Create an instance of the corresponding extractor class from the PyRadiomics library and execute it. For example:
+
+```bash
+if cf["new_feature"]:
+    new_feature_extractor = new_feature_module.RadiomicsNewFeature(dcm_sitk, mask_sitk)
+    new_feature_results = new_feature_extractor.execute()
+    feature, feature_names = extract_results(new_feature_results, "new_feature")
+    feature_list.append(feature)
+    feature_names_list.append(feature_names)
+```
+3. Update the return statement: The function will automatically return the updated feature and feature names lists after adding the new feature extraction code.
+
+---
+With these modifications, you can customize the `calc_radiomics` function to include any Radiomics features supported by the PyRadiomics library. Make sure to consult the library's documentation for a comprehensive list of available features and their respective modules.
+
+---
+
 <a name="License"></a>
 ## <p style='color:darkred'> V. License
 [GNU General Public License 3](https://www.gnu.org/licenses/gpl-3.0.html)
