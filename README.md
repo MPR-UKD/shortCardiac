@@ -1,6 +1,11 @@
 # <p style='color:darkred'> shortCardiac  </p>
 
-#### standardized, simplified and accelerated - cardiac evaluation of tomorrow
+### standardized, simplified and accelerated - cardiac evaluation of tomorrow
+
+---
+Please note that `shortCardiac` is not a medical product and should not be used as a substitute for professional medical advice or diagnosis. --
+
+---
 
 ## Overview
 #### I. [What is shortCardiac?](#what)
