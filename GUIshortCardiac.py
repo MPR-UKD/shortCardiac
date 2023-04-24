@@ -841,13 +841,21 @@ class MainWindow(QMainWindow):
 if __name__ == "__main__":
     freeze_support()
     app = QApplication(sys.argv)
-    file = QFile(r"dark.qss")
-    file.open(QFile.ReadOnly | QFile.Text)
-    steam = QTextStream(file)
-    app.setStyle("QtCurve")
-    app.setStyleSheet(steam.readAll())
 
-    window = MainWindow()
-    window.show()
+    # Add disclaimer window
+    disclaimer_text = "shortCardiac is not a medical product and should only be used for scientific purposes. By clicking OK, you confirm that you understand and accept this disclaimer."
+    disclaimer_reply = QMessageBox.question(None, "Disclaimer", disclaimer_text, QMessageBox.Ok | QMessageBox.Cancel)
 
-    app.exec()
+    if disclaimer_reply == QMessageBox.Ok:
+        # Load stylesheet
+        file = QFile(r"dark.qss")
+        file.open(QFile.ReadOnly | QFile.Text)
+        steam = QTextStream(file)
+        app.setStyle("QtCurve")
+        app.setStyleSheet(steam.readAll())
+
+        # Open main window
+        window = MainWindow()
+        window.show()
+
+        app.exec()
