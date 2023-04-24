@@ -407,9 +407,9 @@ def add_information(layout):
     myFont.setPointSize(10)
     myFont.setBold(True)
     version.setFont(myFont)
-    data = QLabel(" Sep 26, 2022")
+    data = QLabel(" Apr 24, 2023")
     copyright_ = QLabel(
-        "Copyright (C) 2022 - present; University Hospital Düsseldorf, Germany - "
+        "Copyright (C) 2023 - present; University Hospital Düsseldorf, Germany - "
         "License: GNU GENERAL PUBLICE LICENSE, Version 3, 29 June 2007"
     )
     citation = QLabel(
