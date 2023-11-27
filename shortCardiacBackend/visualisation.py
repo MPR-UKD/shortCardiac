@@ -203,7 +203,8 @@ def plot_img(
     """
     if scaling is None or img_cf["crop_img"] == False:
         scaling = 1
-    center = center * scaling
+    if center is not None:
+        center = center * scaling
     pre_size = dicom_img.size
     dicom_img = dicom_img.resize((scaling * pre_size[0], scaling * pre_size[1]))
     center_img = (dicom_img.size[0] / 2, dicom_img.size[1] / 2)
