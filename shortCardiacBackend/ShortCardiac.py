@@ -3,7 +3,7 @@ from abc import ABC
 import matplotlib.pyplot as plt
 
 from shortCardiacBackend.loadAndSave import load_dcm_as_PIL
-from shortCardiacBackend.radiomics import calc_mask_of_polygon, calc_radiomics
+from shortCardiacBackend.radiomics import calc_mask_of_polygon_for_radiomics, calc_radiomics
 from shortCardiacBackend.ShowCalculationsStepByStep import *
 from shortCardiacBackend.SIConvertion import convert_params
 from shortCardiacBackend.supportFunction import *
@@ -235,31 +235,32 @@ class ShortCardiac(ABC):
             self.merge_results()
         # else:
         except Exception as e:
+            self.calculable = False
             self.merge_results()
             return self.dcm_file, [], self.merged_param_names
         return self.get_results()
 
     def generate_mask(self):
-        right_ventricel_mask = calc_mask_of_polygon(
+        right_ventricel_mask = calc_mask_of_polygon_for_radiomics(
             self.dcm_file,
             self.coords,
             self.config.rv_name_or_nr,
             self.config.resize_polygon_factor,
         )
-        saendocardialContour_mask = calc_mask_of_polygon(
+        saendocardialContour_mask = calc_mask_of_polygon_for_radiomics(
             self.dcm_file,
             self.coords,
             self.config.lv_endo_name_or_nr,
             self.config.resize_polygon_factor,
         )
         saepicardialContour_mask = (
-            calc_mask_of_polygon(
+                calc_mask_of_polygon_for_radiomics(
                 self.dcm_file,
                 self.coords,
                 self.config.lv_epi_name_or_nr,
                 self.config.resize_polygon_factor,
             )
-            - saendocardialContour_mask
+                - saendocardialContour_mask
         )
         return right_ventricel_mask, saendocardialContour_mask, saepicardialContour_mask
 

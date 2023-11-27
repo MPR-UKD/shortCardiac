@@ -9,7 +9,7 @@ from radiomics import setVerbosity
 from shortCardiacBackend.supportFunction import flatted_list
 
 
-def calc_mask_of_polygon(
+def calc_mask_of_polygon_for_radiomics(
     dcm_img: str, coords: dict, name: str, resize_polygon_factor: int
 ) -> np.ndarray:
     """
