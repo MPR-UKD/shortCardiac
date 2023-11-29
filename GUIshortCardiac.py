@@ -2,6 +2,7 @@ import json
 import multiprocessing
 import os
 import sys
+from multiprocessing import freeze_support
 
 import pydicom.encoders
 import PyQt5.sip
@@ -13,21 +14,6 @@ from main import *
 from shortCardiacBackend.Config import RunConfiguration
 
 
-class ProgressThread(QThread):
-    progress_signal = pyqtSignal(int)
-
-    def __init__(self, queue):
-        super().__init__()
-        self.queue = queue
-        self.count = 0
-
-    def run(self):
-        while True:
-            progress = self.queue.get()
-            if progress == -1:  # Ein Signal zum Beenden des Threads
-                break
-            self.count += 1
-            self.progress_signal.emit(self.count)
 
 class MySwitch(QPushButton):
     def __init__(self, parent=None):
@@ -504,12 +490,6 @@ def file_manager(mainWindow, file_manager_layout):
     )
     dicom_load_button.clicked.connect(mainWindow.dicom_load_function)
 
-    # Add a progress bar
-    mainWindow.progress_bar = QProgressBar(mainWindow)
-    mainWindow.progress_bar.setVisible(False)
-    mainWindow.progress_bar.setMinimum(-1)
-    file_manager_layout.addWidget(mainWindow.progress_bar, 3, 0, 1, 2)
-
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -600,25 +580,15 @@ class MainWindow(QMainWindow):
         if msg is not None:
             msg.exec_()
 
-    def update_progress(self, value):
-        if self.progress_bar.value() == -1:
-            self.progress_bar.setValue(0)
-            self.progress_bar.setMaximum(value)
-            self.progress_bar.setMinimum(0)
-            self.progress_bar.setVisible(True)
-            QApplication.processEvents()
-        else:
-            self.progress_bar.setValue(value)
-            QApplication.processEvents()
-
     def run_shortCardiac(self):
         config = self.create_config()
         dicom_folder = self.dicom_line_edit.text()
         coord_file = self.coordinate_line_edit.text()
         if "" == dicom_folder or "" == coord_file:
             return None
-        self.progress_bar.setValue(-1)
-        main(coord_file=coord_file, dcm_folder=dicom_folder, config=config, update_progress=self.update_progress)
+        self.setEnabled(False)
+        main(coord_file=coord_file, dcm_folder=dicom_folder, config=config)
+        self.setEnabled(True)
         msg = QMessageBox()
         msg.setWindowTitle("User massage")
         msg.setText("Calculations successfully completed")
@@ -893,4 +863,4 @@ if __name__ == "__main__":
         window = MainWindow()
         window.show()
 
-        app.exec()
+        app.exec_()
