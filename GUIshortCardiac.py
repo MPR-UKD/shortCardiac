@@ -405,12 +405,12 @@ def set_settings(mainWindow, configs_layout):
 
 def add_information(layout):
     info_layout = QGridLayout()
-    version = QLabel("Version: 1.0.0 - ")
+    version = QLabel("Version: 1.1.0 - ")
     myFont = QtGui.QFont()
     myFont.setPointSize(10)
     myFont.setBold(True)
     version.setFont(myFont)
-    data = QLabel(" Apr 24, 2023")
+    data = QLabel(" Nov 29, 2023")
     copyright_ = QLabel(
         "Copyright (C) 2023 - present; University Hospital Düsseldorf, Germany - "
         "License: GNU GENERAL PUBLICE LICENSE, Version 3, 29 June 2007"
